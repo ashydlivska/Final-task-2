@@ -1,0 +1,259 @@
+{
+	"info": {
+		"_postman_id": "54cb15c6-0a31-4fdd-811c-7f39f98ac475",
+		"name": "Assignment 2 - API tests",
+		"description": "This collection contains automated API tests.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31587477"
+	},
+	"item": [
+		{
+			"name": "Assignment 2 - API tests",
+			"item": [
+				{
+					"name": "Test 1 GET Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verify that the response contains the 'OK' authentication code",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Verify that the response has a correct first name",
+									"pm.test(\"Response has correct first name\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.args.firstname).to.eql(\"Anhelina\");",
+									"});",
+									"",
+									"// Verify that the response has a correct last name",
+									"pm.test(\"Response has correct last name\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.args.lastname).to.eql(\"Shydlivska\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://postman-echo.com/get?firstname=Anhelina&lastname=Shydlivska",
+							"protocol": "https",
+							"host": [
+								"postman-echo",
+								"com"
+							],
+							"path": [
+								"get"
+							],
+							"query": [
+								{
+									"key": "firstname",
+									"value": "Anhelina"
+								},
+								{
+									"key": "lastname",
+									"value": "Shydlivska"
+								}
+							]
+						},
+						"description": "This test is to validate the response status code. This Snippet is also available on the right sidebar under `Status code: Code in 200`."
+					},
+					"response": []
+				},
+				{
+					"name": "Test 2 POST Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verify that the response contains the 'OK' authentication code",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Verify that the response has a correct first name",
+									"pm.test(\"Response has correct first name\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.json.firstname).to.eql(\"Anhelina\");",
+									"});",
+									"",
+									"// Verify that the response has a correct last name",
+									"pm.test(\"Response has correct last name\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    pm.expect(jsonData.json.lastname).to.eql(\"Shydlivska\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstname\": \"Anhelina\",\r\n  \"lastname\": \"Shydlivska\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://postman-echo.com/post",
+							"protocol": "https",
+							"host": [
+								"postman-echo",
+								"com"
+							],
+							"path": [
+								"post"
+							]
+						},
+						"description": "This test is written to validate the server performed a function as expected."
+					},
+					"response": []
+				},
+				{
+					"name": "Test 3 Basic Auth",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verify that the response contains a proper authentication code\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Verify that the response contains an appropriate message indicating valid authentication “authenticated\":true” \r",
+									"pm.test(\"Response contains authenticated message\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.authenticated).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"// The following part of the test extracts username and password from the request authorization header. \r",
+									"// After the request was sent, switch to Console and find the username and password values. \r",
+									"\r",
+									"// Get the Authorization header value\r",
+									"const authorizationHeader = pm.request.headers.get('Authorization');\r",
+									"\r",
+									"// Check if the Authorization header exists\r",
+									"if (authorizationHeader) {\r",
+									"    // Extract the encoded credentials part (after 'Basic ')\r",
+									"    const encodedCredentials = authorizationHeader.split(' ')[1];\r",
+									"\r",
+									"    // Decode the Base64-encoded credentials\r",
+									"    const decodedCredentials = atob(encodedCredentials);\r",
+									"\r",
+									"    // Split the decoded credentials into username and password\r",
+									"    const [username, password] = decodedCredentials.split(':');\r",
+									"\r",
+									"    // Log the extracted values to the console\r",
+									"    console.log('Extracted username:', username);\r",
+									"    console.log('Extracted password:', password);\r",
+									"\r",
+									"} else {\r",
+									"    console.error('Authorization header not found in the request.');\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "key",
+									"value": "Authorization",
+									"type": "string"
+								},
+								{
+									"key": "value",
+									"value": "Basic cG9zdG1hbjpwYXNzd29yZA==",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://postman-echo.com/basic-auth",
+							"protocol": "https",
+							"host": [
+								"postman-echo",
+								"com"
+							],
+							"path": [
+								"basic-auth"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "This folder contains automated API tests.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
